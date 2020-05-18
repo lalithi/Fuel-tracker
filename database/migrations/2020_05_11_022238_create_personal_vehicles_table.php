@@ -15,6 +15,10 @@ class CreatePersonalVehiclesTable extends Migration
     {
         Schema::create('personal_vehicles', function (Blueprint $table) {
             $table->id();
+            $table->string('registration_number');
+            $table->unsignedInteger('vehicle_model_id');
+            $table->unsignedInteger('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
