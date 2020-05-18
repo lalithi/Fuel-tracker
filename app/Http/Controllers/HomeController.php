@@ -8,6 +8,7 @@ use App\PersonalVehicle;
 use App\VehicleModel;
 use App\FuelRecord;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -26,7 +27,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(PersonalVehicle $selected = null)
+    public function index(Request $request)
     {
         $personalVehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->get();
 
@@ -40,7 +41,8 @@ class HomeController extends Controller
             ->with('vehicle_add', '[]');
         }
 
-
+        
+        $selected = PersonalVehicle::where('user_id', '=', Auth::user()->id)->where('id', '=',  $request->get('v'))->first();
         if(!$selected)
             $selected = $personalVehicles->first();
 
@@ -52,13 +54,26 @@ class HomeController extends Controller
             $amount = [];
             $efficiency = [];
             $oldreading = 0;
+            $total_distance = 0;
+            $total_cost = 0;
+            $total_amount = 0;
             foreach ($fuelRecords as $f) {
                 $cost[] = $f->cost;
                 $amount[] = $f->refuel_amount;
-                $efficiency[] = ($f->odometer_reading - $oldreading)/$f->cost;
+                if($oldreading != 0)
+                    $efficiency[] = ($f->odometer_reading - $oldreading)/$f->cost;
+                
+
+                $total_cost = $total_cost + $f->cost;
+                $total_amount = $total_amount + $f->refuel_amount;
+
+                if($oldreading != 0)
+                    $total_distance = $total_distance + ($f->odometer_reading - $oldreading);
+
                 $oldreading = $f->odometer_reading;
             }
 
+            // $efficiency = array_shift($efficiency);
         $fuelTypes = FuelType::get();
 
         return view('home')
@@ -68,6 +83,13 @@ class HomeController extends Controller
         ->with('efficiency', $efficiency)
         ->with('cost', $cost)
         ->with('amount', $amount)
+        ->with('a', $total_distance/$total_amount)
+        ->with('e', $total_distance/$total_cost)
         ->with('fuel_records', $fuelRecords);   
+    }
+
+    public function upload(Request $request){
+       $recipt = Storage::putFile('recipt', $request->file('file'));
+       $vehicle = $request->get('vehicle');
     }
 }

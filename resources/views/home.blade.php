@@ -4,6 +4,8 @@
 
         <!-- C3 Chart css -->
         <link href="http://verticle.local/assets/libs/c3/c3.min.css" rel="stylesheet" type="text/css" />
+        
+        <link href="http://verticle.local/assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
                     <!-- Start Content-->
                     <div class="container-fluid">
                         
@@ -23,7 +25,7 @@
                                                        Select Vehicle
                                                     </div>
                                                     <div class="col-4" style="margin-top: 14px;">
-                                                    <select class="form-control" id="personal_vehicle_id" name="personal_vehicle_id">
+                                                    <select class="form-control" id="personal_vehicle_id" name="personal_vehicle_id" onchange="update_vehicle()">
                                                     @foreach($personal_vehicles as $personal_vehicle)
                                                     <option value="{{ $personal_vehicle->id }}">{{ $personal_vehicle->registration_number }}</option>
                                                     @endforeach
@@ -56,6 +58,35 @@
                                         <h4 class="header-title mb-0">Add a Fuel record</h4>
 
                                         <div id="cardCollpase3" class="collapse pt-3 show">
+
+
+                                        <div id="accordion" class="mb-3">
+                                    <div class="card mb-1">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="m-0">
+                                                <a class="text-dark collapsed" data-toggle="collapse" href="#collapseOne" aria-expanded="false">
+                                                    <i class="mdi mdi-help-circle mr-1 text-primary"></i> 
+                                                    Upload a recipt
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                                            <div class="card-body">
+                                            <div class="dropify-wrapper"><div class="dropify-message"><span class="file-icon"></span> <p>Drag and drop a file here or click</p><p class="dropify-error">Ooops, something wrong appended.</p></div><div class="dropify-loader"></div><div class="dropify-errors-container"><ul></ul></div><input type="file" class="dropify" data-max-file-size="5M" id="image"><button type="button" class="dropify-clear">Remove</button><div class="dropify-preview"><span class="dropify-render"></span><div class="dropify-infos"><div class="dropify-infos-inner"><p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p><p class="dropify-infos-message">Drag and drop or click to replace</p></div></div></div></div>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-1">
+                                        <div class="card-header" id="headingTwo">
+                                            <h5 class="m-0">
+                                                <a class="text-dark collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false">
+                                                    <i class="mdi mdi-help-circle mr-1 text-primary"></i> 
+                                                    Manually Add a Fuel Record
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion" style="">
+                                            <div class="card-body">
                                             <div class="">
                                             @php 
                                     $add = route('fuel-records.store');
@@ -64,6 +95,10 @@
                                     @endphp
                                     <form action="{{ $add }}" method="post">
                                     {{csrf_field()}}
+
+                                 
+                                            <input type="hidden"  name="personal_vehicle_id" id="personal_vehicle_id" value="{{ $selected->id }}">
+                                                
                                             <div class="form-group">
                                                 <label for="reciptNumber">Recipt Number</label>
                                                 <input type="text" class="form-control" name="receipt_number" id="receipt_number" aria-describedby="reciptNumber" placeholder="Enter Recipt Number">
@@ -93,21 +128,19 @@
                                                 </select>
                                                 <small id="fuel_type" class="form-text text-muted">Select Fuel Type</small>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="personal_vehicle">Vehicle</label>
-                                                <select class="form-control" id="personal_vehicle_id" name="personal_vehicle_id">
-                                                    @foreach($personal_vehicles as $personal_vehicle)
-                                                    <option value="{{ $personal_vehicle->id }}">{{ $personal_vehicle->registration_number }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <small id="personal_vehicle" class="form-text text-muted">Select Vehicle</small>
-                                            </div>
                                             
                                             <a href="" type="button" class="btn btn-primary waves-effect waves-light">Reset</a>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
                                         </form>
-                                               
                                             </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
+
+
+                                    
                                         </div> <!-- end collapse-->
                                     </div> <!-- end card-body-->
                                 </div> <!-- end card-->
@@ -128,14 +161,14 @@
                                             <div class="text-center">
                                                 <div class="row mt-2">
                                                     <div class="col-6">
-                                                        <h3 data-plugin="counterup">2,845</h3>
+                                                        <h3 data-plugin="counterup">{{ number_format((float)$a, 2, '.', '') }}</h3>
                                                         <p class="text-muted font-13 mb-0 text-truncate">km/l</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <h3 data-plugin="counterup">6,487</h3>
-                                                        <p class="text-muted font-13 mb-0 text-truncate">l / 100km</p>
+                                                        <h3 data-plugin="counterup">{{ number_format((float)$e, 2, '.', '') }}</h3>
+                                                        <p class="text-muted font-13 mb-0 text-truncate">km / $</p>
                                                     </div>
-                                                </div> end row
+                                                </div> 
 
                                                 <div id="line-regions" style="height: 300px;" dir="ltr"></div>
 
@@ -228,8 +261,50 @@
         <script src="http://verticle.local/assets/libs/d3/d3.min.js"></script>
         <script src="http://verticle.local/assets/libs/c3/c3.min.js"></script>
 
+        <script src="http://verticle.local/assets/libs/dropify/dropify.min.js"></script>
         <!-- Dashboard init-->
         <script>
+
+
+var fileNode = document.querySelector('#image'),
+        form = new FormData(),
+        xhr = new XMLHttpRequest();
+
+    fileNode.addEventListener('change', function( event ) {
+        event.preventDefault();
+
+        var files = this.files;
+        for (var i = 0, numFiles = files.length; i < numFiles; i++) {
+            var file = files[i];
+
+            // check mime
+            if (['image/png', 'image/jpg'].indexOf(file.type) == -1) {
+                // mime type error handling
+            }
+
+            form.append('files[]', file, file.name);
+            form.append('_token', '{{ csrf_field() }}');
+            form.append('vehicle_id', '{{ $selected->id }}');
+            
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // do sth with the response
+                }
+            }
+
+            xhr.open('POST', '{{ url("/home") }}');
+            xhr.send(form);
+        }
+    });
+
+
+        function update_vehicle(){
+            var personal_vehicle_id = 0;
+            personal_vehicle_id = document.getElementById('personal_vehicle_id').value;
+
+            window.location.replace("{{ url('/') }}"+'/home?v='+personal_vehicle_id);
+        }
         /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

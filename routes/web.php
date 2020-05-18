@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::post('home', 'HomeController@upload');
 
     // vehicle brands
     // Route::get('/brands/{brand}', 'VehicleBrandController@show')->name('brands.details');
