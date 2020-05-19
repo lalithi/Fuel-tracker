@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+Route::get('/about-us', 'HomeController@about');
+Route::get('/contact-us', 'HomeController@contact');
+Route::get('/help', 'HomeController@help');
+Route::get('/terms-and-conditions', 'HomeController@terms');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::post('home', 'HomeController@upload');
@@ -45,15 +52,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('vehicles', 'PersonalVehicleController');
 
     // Fuel- records
-    Route::get('/fuel-records/{fuel-record-id}', 'FuelRecordController@show')->name('fuel-record-details');
-    Route::get('/fuel-records/{fuel-record-id}/edit', 'FuelRecordController@edit')->name('fuel-record-edit');
-    Route::patch('/fuel-records/{fuel-record-id}', 'FuelRecordController@update')->name('fuel-record-patch');
+    // Route::get('/fuel-records/{fuel-record-id}', 'FuelRecordController@show')->name('fuel-record-details');
+    // Route::get('/fuel-records/{fuel-record-id}/edit', 'FuelRecordController@edit')->name('fuel-record-edit');
+    // Route::patch('/fuel-records/{fuel-record-id}', 'FuelRecordController@update')->name('fuel-record-patch');
     Route::get('/fuel-records/{fuel-record}/delete', 'FuelRecordController@destroy')->name('fuel-record-delete');
-    Route::post('/fuel-records/{fuel-record}', 'FuelRecordController@store');
-    Route::get('/fuel-records', 'FuelRecordController@index');
+    // Route::post('/fuel-records/{fuel-record}', 'FuelRecordController@store');
+    // Route::get('/fuel-records', 'FuelRecordController@index');
     Route::resource('fuel-records', 'FuelRecordController');
 });
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

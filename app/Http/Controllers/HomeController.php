@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -76,6 +76,13 @@ class HomeController extends Controller
             // $efficiency = array_shift($efficiency);
         $fuelTypes = FuelType::get();
 
+        $a = 0;
+        if($total_amount != 0)
+            $a = $total_distance/$total_amount;
+        $e = 0;
+        if($total_cost != 0)
+            $e = $total_distance/$total_cost;
+
         return view('home')
         ->with('fuel_types', $fuelTypes)
         ->with('selected', $selected)
@@ -83,13 +90,26 @@ class HomeController extends Controller
         ->with('efficiency', $efficiency)
         ->with('cost', $cost)
         ->with('amount', $amount)
-        ->with('a', $total_distance/$total_amount)
-        ->with('e', $total_distance/$total_cost)
+        ->with('a', $a)
+        ->with('e', $e)
         ->with('fuel_records', $fuelRecords);   
     }
 
     public function upload(Request $request){
-       $recipt = Storage::putFile('recipt', $request->file('file'));
+       $recipt = Storage::disk('s3')->putFile('receipt', $request->file('file'));
        $vehicle = $request->get('vehicle');
+    }
+
+    public function about(Request $request){
+       return view('about');
+    }
+    public function contact(Request $request){
+       return view('contact');
+    }
+    public function help(Request $request){
+       return view('faq');
+    }
+    public function terms(Request $request){
+       return view('terms');
     }
 }

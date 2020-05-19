@@ -37,7 +37,7 @@
                                             <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
                                             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                                         </div>
-                                        <h5 class="card-title mb-0">{{ $vehicle->registration_number }}</h5>
+                                        <h5 class="card-title mb-0">{{ $vehicle->registration_number }} ( {{ $vehicle->brand }} - {{ $vehicle->model }})</h5>
                                         <hr>
                                         <div id="cardCollpase1" class="collapse pt-3 show">
                                             <div class="row">
@@ -74,8 +74,7 @@
                                             <div style="margin-top:15px"></div>
                                             <div class="form-group text-right m-b-0">
                                             <div class="button-list">
-                                            <a href="{{ $vehicle->more }}" type="button" class="btn btn-info waves-effect waves-light">
-                                                    <span class="btn-label"><i class="mdi mdi-alert-circle-outline"></i></span>Info
+                                            <a href="{{ $vehicle->more }}" type="button" class="btn btn-info waves-effect waves-light">Mode Details
                                                 </a>
                                             </div>
                                             </div>

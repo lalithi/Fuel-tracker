@@ -26,7 +26,7 @@
                                 <div class="card-box">
                                     <h4 class="header-title">My Vehicles</h4>
                                     <p class="sub-header">
-                                    List of Vehicles
+                                    List of Personal Vehicles. Please click <a href="{{ url('vehicles/create') }}">here</a> to add a new Vehicle</p>
                                     </p>
 
                                     <div class="table-responsive">
@@ -50,7 +50,8 @@
                                                 $edit = $edit.'?page='.app('request')->input('page');
                                             
                                             $delete = route('vehicles.destroy', ['vehicle' => $vehicle->id]);
-
+                                            $m = \App\VehicleModel::withTrashed()->find($vehicle->vehicle_model_id);
+                                            $b = \App\VehicleBrand::withTrashed()->find($m->vehicle_brand_id);
                                             @endphp
                                             @if(
                                                 (
@@ -65,7 +66,7 @@
                                             <tr>
                                             @endif
                                                 <td>{{ $vehicle->registration_number }}</td>
-                                                <td>{{ \App\VehicleModel::withTrashed()->find($vehicle->vehicle_model_id)->name }}</td>
+                                                <td>{{ $m->name." - ".$b->name }}</td>
                                                 <td style="text-align: right;width:200px">
                                                     <form method="post" action="{{ $delete }}"> 
                                                     @csrf
@@ -73,7 +74,7 @@
                                                     <a href="{{ $more }}" type="button" class="btn btn-success btn-xs waves-effect waves-light">More</a>
                                                     <a href="{{ $edit }}" type="button" class="btn btn-warning btn-xs waves-effect waves-light">Edit</a>
                                                     
-                                                    <button type="submit" class="btn btn-danger btn-xs waves-effect waves-light">Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-xs waves-effect waves-light" onclick="return confirm('Are you sure you want to delete this Vehicle?');">Delete</button>
                                                
                                                 </form>
                                                      </td>
@@ -96,17 +97,25 @@
                                 <div class="card-box">
                                     <h4 class="header-title">Vehicle Details</h4>
                                     <p class="sub-header">
-                                        Use one of two modifier classes to make <code>&lt;thead&gt;</code>s appear light or dark gray.
+                                    Vehicle Details of <strong>{{ $vehicle_more->registration_number }}</strong>
                                     </p>
-
+                                    @include('flash-message')
+                                    @php  
+$m = App\VehicleModel::withTrashed()->find($vehicle_more->vehicle_model_id);
+$b = \App\VehicleModel::withTrashed()->find($m->vehicle_brand_id);
+@endphp
                                     <div class="table-responsive" style="overflow-x:hidden">
                                     <dl class="row">
-                                                <dt class="col-sm-3">Registration Number</dt>
-                                                <dd class="col-sm-9">{{ $vehicle_more->registration_number }}</dd>
+                                    <dt class="col-sm-3">Brand</dt>
+                                    <dd class="col-sm-9">{{ $b->name }}</dd>
+                                
+                                    <dt class="col-sm-3">Model</dt>
+                                    <dd class="col-sm-9">{{ $m->name }}</dd>
+                                
+                                    <dt class="col-sm-3">Registration Number</dt>
+                                    <dd class="col-sm-9">{{ $vehicle_more->registration_number }}</dd>
 
-                                                <dt class="col-sm-3">Model</dt>
-                                                <dd class="col-sm-9">{{ \App\VehicleModel::withTrashed()->find($vehicle_more->vehicle_model_id)->name }}</dd>
-                                            </dl>
+                                    </dl>
                                     </div> <!-- end table-responsive-->
         
                                 </div> <!-- end card-box -->
@@ -114,21 +123,33 @@
                                 <div class="card-box">
                                     <h4 class="header-title">Update Vehicle Details</h4>
                                     <p class="sub-header">
-                                        Update Vehicle Details
+                                        Update Vehicle Details of {{ $vehicle_edit->registration_number }}
                                     </p>
+                                    @include('flash-message')
+                                    @if($errors->any())
+                                        <div class="alert alert-danger" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+
+                                            @foreach($errors->all() as $error)
+                                                {{ $error }}<br/>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                     @php 
-                                    $patch = route('vehicles.update', ['vehicle' => $vehicle->id]);
+                                    $patch = route('vehicles.update', ['vehicle' => $vehicle_edit->id]);
                                     if(app('request')->input('page'))
                                         $patch = $patch.'?page='.app('request')->input('page');
+
+
+                                        $edit = route('vehicles.edit', ['vehicle' => $vehicle_edit->id]);
+                                            if(app('request')->input('page'))
+                                                $edit = $edit.'?page='.app('request')->input('page');
                                     @endphp
                                     <form action="{{ $patch }}" method="post">
                                     {{csrf_field()}}
                                      {{ method_field('PATCH') }}
-                                            <div class="form-group">
-                                                <label for="registration_number">Registration Number</label>
-                                                <input type="text" class="form-control" name="registration_number" id="registration_number" aria-describedby="registration_number" placeholder="Enter Registration Number" value="{{ $vehicle_edit->registration_number }}">
-                                                <small id="registration_number" class="form-text text-muted">Registration Number</small>
-                                            </div>
                                             <div class="form-group">
                                                 <label for="brand">Model</label>
                                                 <select class="form-control" id="model_id" name="model_id">
@@ -142,9 +163,14 @@
                                                 </select>
                                                 <small id="brand" class="form-text text-muted">Select a Model</small>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="registration_number">Registration Number</label>
+                                                <input type="text" class="form-control" name="registration_number" id="registration_number" aria-describedby="registration_number" placeholder="Enter Registration Number" value="{{ $vehicle_edit->registration_number }}">
+                                                <small id="registration_number" class="form-text text-muted">Registration Number</small>
+                                            </div>
                                             
-                                            <a href="" type="button" class="btn btn-primary waves-effect waves-light">Reset</a>
-                                            <button type="submit" class="btn btn-primary waves-effect waves-light">Update</button>
+                                            <a href="{{  $edit }}" type="button" class="btn btn-light waves-effect">Reset</a>
+                                            <button type="submit" class="btn btn-blue waves-effect waves-light">Update</button>
                                         </form>
         
                                 </div> <!-- end card-box -->
@@ -154,6 +180,18 @@
                                     <p class="sub-header">
                                         Add Vehicle Details
                                     </p>
+                                    @include('flash-message')
+                                    @if($errors->any())
+                                        <div class="alert alert-danger" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+
+                                            @foreach($errors->all() as $error)
+                                                {{ $error }}<br/>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                     @php 
                                     $add = route('vehicles.store');
                                     if(app('request')->input('page'))
@@ -162,12 +200,7 @@
                                     <form action="{{ $add }}" method="post">
                                     {{csrf_field()}}
                                             <div class="form-group">
-                                                <label for="registration_number">Registration Number</label>
-                                                <input type="text" class="form-control" name="registration_number" id="registration_number" aria-describedby="registration_number" placeholder="Enter Registration Number">
-                                                <small id="registration_number" class="form-text text-muted">Registration Number</small>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="brand">Model</label>
+                                                <label for="brand">Vehicle Model</label>
                                                 <select class="form-control" id="model_id" name="model_id">
                                                 @foreach($models as $model)
                                                         <option value="{{ $model->id }}" selected>{{ $model->name }}</option>
@@ -175,6 +208,11 @@
                                                 @endforeach
                                                 </select>
                                                 <small id="brand" class="form-text text-muted">Select a Model</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="registration_number">Registration Number</label>
+                                                <input type="text" class="form-control" name="registration_number" id="registration_number" aria-describedby="registration_number" placeholder="Enter Registration Number">
+                                                <small id="registration_number" class="form-text text-muted">Registration Number</small>
                                             </div>
                                             
                                             <a href="" type="button" class="btn btn-primary waves-effect waves-light">Reset</a>
@@ -188,13 +226,16 @@
                                     <p class="sub-header">
                                         
                                     </p>
-
+                                    @include('flash-message')
                                     <div class="table-responsive" style="overflow-x:hidden">
                                     <dl class="row">
-                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-success btn-xs waves-effect waves-light">More</a> to view Model details
+                                    <dt class="col-sm-12"><p>Please click <a href="{{ url('/vehicles/create') }}" type="button" class="btn btn-info btn-xs waves-effect waves-light">Add</a> to Add a New Vehicle
                                          </p> </dt>
-
-                                    <dt class="col-sm-12"><p>Please click <a href="{{ url('/vehicles/create') }}" type="button" class="btn btn-info btn-xs waves-effect waves-light">Add</a> to add a Model details
+                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-success btn-xs waves-effect waves-light">More</a> to View Vehicle Details
+                                         </p> </dt>
+                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-warning btn-xs waves-effect waves-light">Edit</a> to View Edit a Specific Vehicle
+                                         </p> </dt>
+                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-danger btn-xs waves-effect waves-light">Delete</a> to Delete a Specific Vehicle
                                          </p> </dt>
                                           </dl>
                                     </div> <!-- end table-responsive-->

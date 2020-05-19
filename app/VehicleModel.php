@@ -15,6 +15,10 @@ class VehicleModel extends Model
         return $this->belongsTo('App\PersonalVehicle', 'vehicle_brand_id');
     }
 
+    public function brand(){
+        return $this->belongsTo('App\VehicleBrand', 'vehicle_brand_id');
+    }
+
     public function vehicles(){
         return $this->hasMany('App\VehicleModel'); 
     }

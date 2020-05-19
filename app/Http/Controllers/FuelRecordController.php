@@ -19,10 +19,11 @@ class FuelRecordController extends Controller
     public function index()
     {
 
-        $fuelRecords = FuelRecord::join('personal_vehicles', 'personal_vehicles.id', '=', 'fuel_records.personal_vehicle_id')
-        ->where('personal_vehicles.user_id', '=', Auth::user()->id)
-        ->where('personal_vehicles.deleted_at', '=', null)
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
         ->paginate(15);
+        // dd($fuelRecords);
         // $fuelRecords = FuelRecord::paginate(10);
         return view('fuel_records.index')
         ->with('fuel_records', $fuelRecords);
@@ -37,9 +38,9 @@ class FuelRecordController extends Controller
     {
         $personalVehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->get();
         $fuelTypes = FuelType::get();
-        $fuelRecords = FuelRecord::join('personal_vehicles', 'personal_vehicles.id', '=', 'fuel_records.personal_vehicle_id')
-        ->where('personal_vehicles.user_id', '=', Auth::user()->id)
-        ->where('personal_vehicles.deleted_at', '=', null)
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
         ->paginate(15);
 
         return view('fuel_records.index')
@@ -57,6 +58,17 @@ class FuelRecordController extends Controller
      */
     public function store(Request $request)
     {
+
+
+        $validatedData = $request->validate([
+            'receipt_number' => 'required|max:255',
+            'cost' => 'required|numeric',
+            'odometer_reading' => 'required|numeric',
+            'refuel_amount' => 'required|numeric',
+            'fuel_type_id' => 'required',
+            'personal_vehicle_id' => 'required',
+        ]);
+
         $fuelRecord = new FuelRecord();
         $fuelRecord->receipt_number = $request->get('receipt_number');
         $fuelRecord->cost = $request->get('cost');
@@ -66,13 +78,13 @@ class FuelRecordController extends Controller
         $fuelRecord->personal_vehicle_id = $request->get('personal_vehicle_id');
         $fuelRecord->save();
 
-        $fuelRecords = FuelRecord::join('personal_vehicles', 'personal_vehicles.id', '=', 'fuel_records.personal_vehicle_id')
-        ->where('personal_vehicles.user_id', '=', Auth::user()->id)
-        ->where('personal_vehicles.deleted_at', '=', null)
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
         ->paginate(15);
         return view('fuel_records.index')
         ->with('fuel_record_more', $fuelRecord)
-        ->with('fuel_records', $fuelRecords);
+        ->with('fuel_records', $fuelRecords)->with('success','Fuel Record Added successfully!');
     }
 
     /**
@@ -86,9 +98,9 @@ class FuelRecordController extends Controller
        
         $this->userHasPermission($fuelRecord);
 
-        $fuelRecords = FuelRecord::join('personal_vehicles', 'personal_vehicles.id', '=', 'fuel_records.personal_vehicle_id')
-        ->where('personal_vehicles.user_id', '=', Auth::user()->id)
-        ->where('personal_vehicles.deleted_at', '=', null)
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
         ->paginate(15);
         return view('fuel_records.index')
         ->with('fuel_record_more', $fuelRecord)
@@ -105,12 +117,15 @@ class FuelRecordController extends Controller
     {
            
         $this->userHasPermission($fuelRecord);
-
-        $fuelRecords = FuelRecord::join('personal_vehicles', 'personal_vehicles.id', '=', 'fuel_records.personal_vehicle_id')
-        ->where('personal_vehicles.user_id', '=', Auth::user()->id)
-        ->where('personal_vehicles.deleted_at', '=', null)
+        $personalVehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->get();
+        $fuelTypes = FuelType::get();
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
         ->paginate(15);
         return view('fuel_records.index')
+        ->with('fuel_types', $fuelTypes)
+        ->with('personal_vehicles', $personalVehicles)
         ->with('fuel_record_edit', $fuelRecord)
         ->with('fuel_records', $fuelRecords);
     }
@@ -124,19 +139,35 @@ class FuelRecordController extends Controller
      */
     public function update(Request $request, FuelRecord $fuelRecord)
     {
+        $validatedData = $request->validate([
+            'receipt_number' => 'required|max:255',
+            'cost' => 'required|numeric',
+            'odometer_reading' => 'required|numeric',
+            'refuel_amount' => 'required|numeric',
+            'fuel_type_id' => 'required',
+            'personal_vehicle_id' => 'required',
+        ]);
+
+       
         $fuelRecord->receipt_number = $request->get('receipt_number');
         $fuelRecord->cost = $request->get('cost');
         $fuelRecord->odometer_reading = $request->get('odometer_reading');
         $fuelRecord->refuel_amount = $request->get('refuel_amount');
+        $fuelRecord->fuel_type_id = $request->get('fuel_type_id');
+        $fuelRecord->personal_vehicle_id = $request->get('personal_vehicle_id');
         $fuelRecord->save();
 
-        $fuelRecords = FuelRecord::join('personal_vehicles', 'personal_vehicles.id', '=', 'fuel_records.personal_vehicle_id')
-        ->where('personal_vehicles.user_id', '=', Auth::user()->id)
-        ->where('personal_vehicles.deleted_at', '=', null)
+        $personalVehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->get();
+        $fuelTypes = FuelType::get();
+
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
         ->paginate(15);
         return view('fuel_records.index')
-        ->with('fuel_record_edit', $fuelRecord)
-        ->with('fuel_records', $fuelRecords);
+        ->with('fuel_types', $fuelTypes)
+        ->with('personal_vehicles', $personalVehicles)
+        ->with('fuel_records', $fuelRecords)->with('success','Fuel Record Updated successfully!');
     }
 
     /**
@@ -149,9 +180,12 @@ class FuelRecordController extends Controller
     {
         $fuelRecord->delete();
 
-        $fuelRecords = FuelRecord::paginate(10);
+        $fuelRecords = FuelRecord::select('fuel_records.*')->join('personal_vehicles as ps', 'ps.id', '=', 'fuel_records.personal_vehicle_id')
+        ->where('ps.user_id', '=', Auth::user()->id)
+        ->where('ps.deleted_at', '=', null)
+        ->paginate(15);
         return view('fuel_records.index')
-        ->with('fuel_records', $fuelRecords);
+        ->with('fuel_records', $fuelRecords)->with('warning','Fuel Record Removed successfully!');
     }
 
     private function userHasPermission(FuelRecord $fuelRecord)

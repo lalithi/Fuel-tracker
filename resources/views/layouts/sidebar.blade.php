@@ -14,7 +14,7 @@
             <ul class="metismenu" id="side-menu">
 
                 <li class="menu-title">Navigation</li>
-
+@auth
                 <li>
                     <a href="{{ url('/home')}}">
                         <i class="fe-airplay"></i>
@@ -22,7 +22,7 @@
                     </a>
                   
                 </li>
-                @if(Auth::user()->isadmin())
+                @if((Auth::user())&&(Auth::user()->isadmin()))
                 <li>
                     <a href="{{ url('/brands') }}">
                         <i class="fe-pocket"></i>
@@ -53,6 +53,24 @@
                         <span class="menu-arrow"></span>
                     </a>
                 </li>
+
+                @else
+
+                <li>
+                    <a href="{{ url('/login') }}">
+                        <i class="fe-pocket"></i>
+                        <span> Login </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/register') }}">
+                        <i class="fe-pocket"></i>
+                        <span> Register </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                </li>
+                @endauth
             </ul>
 
         </div>

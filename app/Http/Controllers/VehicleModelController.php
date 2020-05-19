@@ -45,16 +45,25 @@ class VehicleModelController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $validatedData = $request->validate([
+        'name' => 'required|max:255',
+        'description' => 'required',
+        'brand_id' => 'required',
+        ],[
+            'vehicle_brand_id.required'=> 'Please Select a Vehicle Brand'
+        ]);
         $model = new VehicleModel();
         $model->name = $request->get('name');
         $model->description = $request->get('description');
+        $model->vehicle_brand_id = $request->get('brand_id');
         $model->save();
 
         $brands = VehicleBrand::get();
         $models = VehicleModel::paginate(10);
         return view('models.index')
         ->with('brands', $brands)
-        ->with('models', $models);
+        ->with('models', $models)->with('success','Model Added successfully!');
     }
 
     /**
@@ -101,15 +110,24 @@ class VehicleModelController extends Controller
     public function update(Request $request, VehicleModel $model)
     {
         $brands = VehicleBrand::get();
-        $model->name = $request->get('name');
-        $model->description = $request->get('description');
-        $model->save();
+        
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'brand_id' => 'required',
+            ],[
+                'vehicle_brand_id.required'=> 'Please Select a Vehicle Brand'
+            ]);
+            $model->name = $request->get('name');
+            $model->description = $request->get('description');
+            $model->vehicle_brand_id = $request->get('brand_id');
+            $model->save();
+
 
         $models = VehicleModel::paginate(10);
         return view('models.index')
-        ->with('model_edit', $model)
         ->with('brands', $brands)
-        ->with('models', $models);
+        ->with('models', $models)->with('success','Model Updated successfully!');
     }
 
     /**
@@ -124,7 +142,7 @@ class VehicleModelController extends Controller
 
         $models = VehicleModel::paginate(10);
         return view('models.index')
-        ->with('models', $models);
+        ->with('models', $models)->with('warning','Model Deleted successfully!');
     }
 
 

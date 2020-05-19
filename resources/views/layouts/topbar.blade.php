@@ -107,7 +107,7 @@
 
             </div>
         </li> -->
-
+@auth
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                 <!-- <img src="assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle"> -->
@@ -137,7 +137,7 @@
             </div>
         </li>
     </ul>
-
+@endauth
     <!-- LOGO -->
     <div class="logo-box">
         <a href="{{ url('home') }}" class="logo text-center">

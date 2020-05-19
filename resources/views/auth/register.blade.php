@@ -65,9 +65,12 @@
                                     <div class="form-group mb-0 text-center">
                                         <button class="btn btn-success btn-block" type="submit"> Sign Up </button>
                                     </div>
+                                    <div class="form-group mb-0">
+                                    by signing up you agree to <a href="{{ url('/terms-and-conditions') }}">Our Terms & Conditions</a>
+                                    </div>
 
                                 </form>
-
+<!-- 
                                 <div class="text-center">
                                     <h5 class="mt-3 text-muted">Sign up using</h5>
                                     <ul class="social-list list-inline mt-3 mb-0">
@@ -78,7 +81,7 @@
                                             <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
 
                             </div> <!-- end card-body -->
                         </div>
@@ -90,7 +93,13 @@
                             </div> <!-- end col -->
                         </div>
                         <!-- end row -->
-
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                            <div class="footer-links d-none d-sm-block">
+                    <a href="{{ url('about-us') }}"  style="color:white">About Us<span style="color:white;padding-left:15px">|</span></a>
+                    <a href="{{ url('help') }}" style="color:white;padding-left:15px">Help & FAQs<span style="color:white;padding-left:15px">|</span></a>
+                    <a href="{{ url('contact-us') }}" style="color:white;padding-left:15px">Contact Us</a>
+                </div>
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->
@@ -100,6 +109,6 @@
         <!-- end page -->
 
         <footer class="footer footer-alt">
-            {{date('Y')}} &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a> 
+        {{date('Y')}} &copy; <a href="{{ url('/') }}" style="color:white">MyFuelTracker.com</a> 
         </footer>
 @endsection

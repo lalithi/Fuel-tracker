@@ -42,6 +42,12 @@ class VehicleBrandController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'required',
+        ]);
+
         $brand = new VehicleBrand();
         $brand->name = $request->get('name');
         $brand->description = $request->get('description');
@@ -49,7 +55,7 @@ class VehicleBrandController extends Controller
 
         $brands = VehicleBrand::paginate(10);
         return view('brands.index')
-        ->with('brands', $brands);
+        ->with('brands', $brands)->with('success','Brand Added successfully!');
     }
 
     /**
@@ -92,15 +98,19 @@ class VehicleBrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, VehicleBrand $brand)
-    {
+    { 
+        $validatedData = $request->validate([
+        'name' => 'required|max:255',
+        'description' => 'required',
+    ]);
+    
         $brand->name = $request->get('name');
         $brand->description = $request->get('description');
         $brand->save();
 
         $brands = VehicleBrand::paginate(10);
         return view('brands.index')
-        ->with('brand_edit', $brand)
-        ->with('brands', $brands);
+        ->with('brands', $brands)->with('success','Brand Updated successfully!');
     }
 
     /**
@@ -115,7 +125,7 @@ class VehicleBrandController extends Controller
 
         $brands = VehicleBrand::paginate(10);
         return view('brands.index')
-        ->with('brands', $brands);
+        ->with('brands', $brands)->with('warning','Brand Deleted successfully!');
     }
 
 

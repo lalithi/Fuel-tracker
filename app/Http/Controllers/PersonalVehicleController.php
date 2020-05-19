@@ -29,28 +29,31 @@ class PersonalVehicleController extends Controller
 
 
             $data->model = '';
-            if($personalVehicle->model)
-                $data->model = $personalVehicle->model->name;
+            $model = \App\VehicleModel::withTrashed()->where('id', '=', $personalVehicle->vehicle_model_id)->first();
+            if($model)
+                $data->model = $model->name;
+
+             
+            $data->brand = '';
+            $vehicleBrand = '';
+          
+            $vehicleBrand = \App\VehicleBrand::withTrashed()->find($model->vehicle_brand_id);
+            if($vehicleBrand)
+                $data->brand = $vehicleBrand->name;
+
+
 
             $data->last_fueled_cost = '0.00';
             if($personalVehicle->fuel_records->last())
             {
                 $data->last_fueled_cost = $personalVehicle->fuel_records->last()->cost;
             }
-             
-            $data->brand = '';
-            $vehicleBrand = '';
-            if($personalVehicle->vehicle)
-            $vehicleBrand = \App\VehicleModel::withTrashed()->find($personalVehicle->vehicle->vehicle_brand_id);
-            if($vehicleBrand)
-                $data->brand = $vehicleBrand->name;
 
-
-            $data->last_fueled_date = '';
+            $data->last_fueled_date = '-';
             if($personalVehicle->fuel_records->last())
             {
                 // dd(Carbon::withTrashed()->now()->diffForHumans($personalVehicle->fuel_records->last()->created_at));
-                $data->last_fueled_date = $personalVehicle->fuel_records->last()->created_at->format('l jS \\of F Y h:i:s A');
+                $data->last_fueled_date = $personalVehicle->fuel_records->last()->created_at->format('l jS \\of F Y, h:i:s A');
             }
             $data->more = url('/vehicles/'.$personalVehicle->id);
 
@@ -85,6 +88,11 @@ class PersonalVehicleController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'registration_number' => 'required|max:255',
+            'model_id' => 'required'
+            ]);
+
         $vehicle = new PersonalVehicle();
         $vehicle->registration_number = $request->get('registration_number');
         $vehicle->vehicle_model_id = $request->get('model_id');
@@ -95,7 +103,7 @@ class PersonalVehicleController extends Controller
         $vehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->paginate(10);
         return view('personal_vehicles.index')
         ->with('models', $models)
-        ->with('vehicles', $vehicles);
+        ->with('vehicles', $vehicles)->with('success','Vehicle Added successfully!');
     }
 
     /**
@@ -108,9 +116,24 @@ class PersonalVehicleController extends Controller
     {
         $this->userHasPermission($vehicle);
 
+        $model = '';
+        $model_ = \App\VehicleModel::withTrashed()->find($vehicle->vehicle_model_id)->first();
+        if($model_)
+            $model = $model_->name;
+
+         
+        $brand = '';
+        $vehicleBrand = '';
+        if($model_)
+        $vehicleBrand = \App\VehicleBrand::withTrashed()->find($model_->vehicle_brand_id)->first();
+        if($vehicleBrand)
+            $brand = $vehicleBrand->name;
+
         $vehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->paginate(10);
         return view('personal_vehicles.index')
         ->with('vehicle_more', $vehicle)
+        ->with('model', $model)
+        ->with('brand', $brand)
         ->with('vehicles', $vehicles);
     }
 
@@ -141,6 +164,11 @@ class PersonalVehicleController extends Controller
      */
     public function update(Request $request, PersonalVehicle $vehicle)
     {
+        $validatedData = $request->validate([
+            'registration_number' => 'required|max:255',
+            'model_id' => 'required'
+            ]);
+
         $models = VehicleModel::get();
         $vehicle->registration_number = $request->get('registration_number');
         $vehicle->vehicle_model_id = $request->get('model_id');
@@ -151,7 +179,7 @@ class PersonalVehicleController extends Controller
         return view('personal_vehicles.index')
         ->with('vehicle_edit', $vehicle)
         ->with('models', $models)
-        ->with('vehicles', $vehicles);
+        ->with('vehicles', $vehicles)->with('success','Vehicle Updated successfully!');
     }
 
     /**
@@ -166,7 +194,7 @@ class PersonalVehicleController extends Controller
 
         $vehicles = PersonalVehicle::where('user_id', '=', Auth::user()->id)->paginate(10);
         return view('personal_vehicles.index')
-        ->with('vehicles', $vehicles);
+        ->with('vehicles', $vehicles)->with('warning','Vehicle Removed successfully!');
     }
 
 

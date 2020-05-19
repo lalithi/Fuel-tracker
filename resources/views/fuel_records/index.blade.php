@@ -26,7 +26,7 @@
                                 <div class="card-box">
                                     <h4 class="header-title">Fuel Records</h4>
                                     <p class="sub-header">
-                                    Fuel Records of all vehicles
+                                    Fuel Records of all vehicles. Please click <a href="{{ url('fuel-records/create') }}">here</a> to add a new Fuel Record</p>
                                     </p>
 
                                     <div class="table-responsive">
@@ -43,11 +43,11 @@
                                             <tbody>
                                             @foreach($fuel_records as $fuel_record)
                                             @php
-                                            $more = route('fuel-record-details', [ 'fuel-record-id' => $fuel_record->id]);
+                                            $more = route('fuel-records.show', [ 'fuel_record' => $fuel_record->id]);
                                             if(app('request')->input('page'))
                                                 $more = $more.'?page='.app('request')->input('page');
                                             
-                                            $edit = route('fuel-record-edit', ['fuel-record-id' => $fuel_record->id]);
+                                            $edit = route('fuel-records.edit', ['fuel_record' => $fuel_record->id]);
                                             if(app('request')->input('page'))
                                                 $edit = $edit.'?page='.app('request')->input('page');
                                             
@@ -77,7 +77,7 @@
                                                     <a href="{{ $more }}" type="button" class="btn btn-success btn-xs waves-effect waves-light">More</a>
                                                     <a href="{{ $edit }}" type="button" class="btn btn-warning btn-xs waves-effect waves-light">Edit</a>
                                                     
-                                                    <button type="submit" class="btn btn-danger btn-xs waves-effect waves-light">Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-xs waves-effect waves-light" onclick="return confirm('Are you sure you want to delete this Fuel Record?');">Delete</button>
                                                
                                                 </form>
                                                      </td>
@@ -100,9 +100,9 @@
                                 <div class="card-box">
                                     <h4 class="header-title">Fuel Record Details</h4>
                                     <p class="sub-header">
-                                        Use one of two modifier classes to make <code>&lt;thead&gt;</code>s appear light or dark gray.
+                                    Model Details of <strong>{{ $fuel_record_more->receipt_number }}</strong>
                                     </p>
-
+                                    @include('flash-message')
                                     <div class="table-responsive" style="overflow-x:hidden">
                                     <dl class="row">
                                                 <dt class="col-sm-3">Recipt Number</dt>
@@ -123,8 +123,19 @@
                                     <p class="sub-header">
                                         Update Fuel Record Details
                                     </p>
+                                    @if($errors->any())
+                                        <div class="alert alert-danger" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+
+                                            @foreach($errors->all() as $error)
+                                                {{ $error }}<br/>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                     @php 
-                                    $patch = route('fuel-record-patch', ['fuel-record-id' => $fuel_record_edit->id]);
+                                    $patch = route('fuel-records.update', ['fuel_record' => $fuel_record_edit->id]);
                                     if(app('request')->input('page'))
                                         $patch = $patch.'?page='.app('request')->input('page');
                                     @endphp
@@ -142,13 +153,48 @@
                                                 <small id="odometerReading" class="form-text text-muted">Odometer Reading</small>
                                             </div>
                                             <div class="form-group">
+                                                <label for="refuel_amount">Refuel Amount</label>
+                                                <input type="text" class="form-control" name="refuel_amount" id="refuel_amount" aria-describedby="refuel_amount" placeholder="Enter Refuel Amount" value="{{ $fuel_record_edit->refuel_amount }}">
+                                                <small id="refuel_amount" class="form-text text-muted">Cost</small>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="cost">Cost</label>
                                                 <input type="text" class="form-control" name="cost" id="cost" aria-describedby="cost" placeholder="Enter Cost" value="{{ $fuel_record_edit->cost }}">
                                                 <small id="cost" class="form-text text-muted">Cost</small>
                                             </div>
                                             
-                                            <a href="" type="button" class="btn btn-primary waves-effect waves-light">Reset</a>
-                                            <button type="submit" class="btn btn-primary waves-effect waves-light">Update</button>
+                                            <div class="form-group">
+                                                <label for="fuel_type">Fuel Type</label>
+                                                <select class="form-control" id="fuel_type_id" name="fuel_type_id">
+                                                @foreach($fuel_types as $fuel_type)
+                                                    @if($fuel_type->id == $fuel_record_edit->fuel_type_id)
+                                                        <option value="{{ $fuel_type->id }}" selected>{{ $fuel_type->name }}</option>
+                                                    @else
+                                                        <option value="{{ $fuel_type->id }}" >{{ $fuel_type->name }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <small id="fuel_type" class="form-text text-muted">Select Fuel Type</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="personal_vehicle">Vehicle</label>
+                                                <select class="form-control" id="personal_vehicle_id" name="personal_vehicle_id">
+                                                    @foreach($personal_vehicles as $personal_vehicle)
+                                                 
+                                                    @if($personal_vehicle->id == $fuel_record_edit->personal_vehicle_id)
+                                                        <option value="{{ $personal_vehicle->id }}" selected>{{ $personal_vehicle->registration_number }}</option>
+                                                    @else
+                                                        <option value="{{ $personal_vehicle->id }}" >{{ $personal_vehicle->registration_number }}</option>
+                                                    @endif
+                                                    
+                                                    @endforeach
+                                                    
+                                                </select>
+                                                <small id="personal_vehicle" class="form-text text-muted">Select Vehicle</small>
+                                            </div>
+                                            
+                                            <a href="" type="button" class="btn btn-light waves-effect">Reset</a>
+                                            <button type="submit" class="btn btn-blue waves-effect waves-light">Update</button>
                                         </form>
         
                                 </div> <!-- end card-box -->
@@ -158,6 +204,17 @@
                                     <p class="sub-header">
                                         Add Fuel Record Details
                                     </p>
+                                    @if($errors->any())
+                                        <div class="alert alert-danger" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+
+                                            @foreach($errors->all() as $error)
+                                                {{ $error }}<br/>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                     @php 
                                     $add = route('fuel-records.store');
                                     if(app('request')->input('page'))
@@ -204,8 +261,9 @@
                                                 <small id="personal_vehicle" class="form-text text-muted">Select Vehicle</small>
                                             </div>
                                             
-                                            <a href="" type="button" class="btn btn-primary waves-effect waves-light">Reset</a>
-                                            <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
+                                            
+                                            <a href="" type="button" class="btn btn-light waves-effect">Reset</a>
+                                            <button type="submit" class="btn btn-blue waves-effect waves-light">Add</button>
                                         </form>
         
                                 </div> <!-- end card-box -->
@@ -216,12 +274,16 @@
                                         
                                     </p>
 
+                                    @include('flash-message')
                                     <div class="table-responsive" style="overflow-x:hidden">
                                     <dl class="row">
-                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-success btn-xs waves-effect waves-light">More</a> to view fuel record details
+                                    <dt class="col-sm-12"><p>Please click <a href="{{ url('/fuel-records/create') }}" type="button" class="btn btn-info btn-xs waves-effect waves-light">Add</a> to Add a New Fuel Record
                                          </p> </dt>
-
-                                    <dt class="col-sm-12"><p>Please click <a href="{{ url('/fuel-records/create') }}" type="button" class="btn btn-info btn-xs waves-effect waves-light">Add</a> to add a fuel record details
+                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-success btn-xs waves-effect waves-light">More</a> to View Fuel Record Details
+                                         </p> </dt>
+                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-warning btn-xs waves-effect waves-light">Edit</a> to View Edit a Specific Fuel Record
+                                         </p> </dt>
+                                    <dt class="col-sm-12"><p>Please click <a href="#" type="button" class="btn btn-danger btn-xs waves-effect waves-light">Delete</a> to Delete a Specific Fuel Record
                                          </p> </dt>
                                           </dl>
                                     </div> <!-- end table-responsive-->

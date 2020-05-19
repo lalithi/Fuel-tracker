@@ -47,10 +47,10 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-group mb-3">
+                                    <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="checkbox-signin">Remember me</label>
+                                            <input type="checkbox" class="custom-control-input" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="remember">Remember me</label>
                                         </div>
                                     </div>
 
@@ -59,7 +59,7 @@
                                     </div>
 
                                 </form>
-
+<!-- 
                                 <div class="text-center">
                                     <h5 class="mt-3 text-muted">Sign in with</h5>
                                     <ul class="social-list list-inline mt-3 mb-0">
@@ -70,7 +70,7 @@
                                             <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
 
                             </div> <!-- end card-body -->
                         </div>
@@ -80,7 +80,7 @@
                             <div class="col-12 text-center">
                                 <p> 
                                 @if (Route::has('password.request'))
-                                    <a class="text-white-50 ml-1" href="{{ route('password.request') }}">
+                                    <a class="text-white-50 ml-1" href="{{ route('password.request') }}" style="color:white !important">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
@@ -89,7 +89,15 @@
                             </div> <!-- end col -->
                         </div>
                         <!-- end row -->
-
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                            <div class="footer-links d-none d-sm-block">
+                    <a href="{{ url('about-us') }}"  style="color:white">About Us<span style="color:white;padding-left:15px">|</span></a>
+                    <a href="{{ url('help') }}" style="color:white;padding-left:15px">Help & FAQs<span style="color:white;padding-left:15px">|</span></a>
+                    <a href="{{ url('contact-us') }}" style="color:white;padding-left:15px">Contact Us</a>
+                </div>
+                            </div> <!-- end col -->
+                        </div>
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->
@@ -100,6 +108,6 @@
 
 
         <footer class="footer footer-alt">
-            {{date('Y')}} &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a> 
+        {{date('Y')}} &copy; <a href="{{ url('/') }}" style="color:white">MyFuelTracker.com</a> 
         </footer>
 @endsection
