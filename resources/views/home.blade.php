@@ -282,7 +282,7 @@ var fileNode = document.querySelector('#image'),
                 // mime type error handling
             }
 
-            form.append('files[]', file, file.name);
+            form.append('file', file, file.name);
             form.append('_token', '{{ csrf_field() }}');
             form.append('vehicle_id', '{{ $selected->id }}');
             
