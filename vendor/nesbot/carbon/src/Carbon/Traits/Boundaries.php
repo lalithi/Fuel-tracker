@@ -10,7 +10,7 @@
  */
 namespace Carbon\Traits;
 
-use Carbon\Exceptions\UnknownUnitException;
+use InvalidArgumentException;
 
 /**
  * Trait Boundaries.
@@ -418,7 +418,7 @@ trait Boundaries
         $ucfUnit = ucfirst(static::singularUnit($unit));
         $method = "startOf$ucfUnit";
         if (!method_exists($this, $method)) {
-            throw new UnknownUnitException($unit);
+            throw new InvalidArgumentException("Unknown unit '$unit'");
         }
 
         return $this->$method(...$params);
@@ -444,7 +444,7 @@ trait Boundaries
         $ucfUnit = ucfirst(static::singularUnit($unit));
         $method = "endOf$ucfUnit";
         if (!method_exists($this, $method)) {
-            throw new UnknownUnitException($unit);
+            throw new InvalidArgumentException("Unknown unit '$unit'");
         }
 
         return $this->$method(...$params);

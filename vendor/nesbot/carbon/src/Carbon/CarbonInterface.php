@@ -16,7 +16,6 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
-use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use ReflectionException;
@@ -842,9 +841,9 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @example
      * ```
-     * Carbon::parse('2018-07-25')->betweenIncluded('2018-07-14', '2018-08-01'); // true
-     * Carbon::parse('2018-07-25')->betweenIncluded('2018-08-01', '2018-08-20'); // false
-     * Carbon::parse('2018-07-25')->betweenIncluded('2018-07-25', '2018-08-01'); // true
+     * Carbon::parse('2018-07-25')->betweenExcluded('2018-07-14', '2018-08-01'); // true
+     * Carbon::parse('2018-07-25')->betweenExcluded('2018-08-01', '2018-08-20'); // false
+     * Carbon::parse('2018-07-25')->betweenExcluded('2018-07-25', '2018-08-01'); // true
      * ```
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date1
@@ -982,7 +981,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param int|null                 $second
      * @param DateTimeZone|string|null $tz
      *
-     * @throws Exception|InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return static
      */
@@ -996,7 +995,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param int|null                 $day
      * @param DateTimeZone|string|null $tz
      *
-     * @throws Exception|InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return static
      */
@@ -1066,7 +1065,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param int|null                 $second
      * @param DateTimeZone|string|null $tz
      *
-     * @throws Exception|InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return static
      */
@@ -1078,7 +1077,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param string                   $time
      * @param DateTimeZone|string|null $tz
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return static
      */
@@ -1121,8 +1120,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param int|null                 $day
      * @param DateTimeZone|string|null $tz
      *
-     * @throws Exception
-     *
      * @return static
      */
     public static function createMidnightDate($year = null, $month = null, $day = null, $tz = null);
@@ -1150,7 +1147,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param int|null                 $second
      * @param DateTimeZone|string|null $tz
      *
-     * @throws Exception
+     * @throws \Carbon\Exceptions\InvalidDateException|\InvalidArgumentException
      *
      * @return static|false
      */
@@ -1314,16 +1311,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInMonths($date = null, $absolute = true);
 
     /**
-     * Get the difference in quarters rounded down.
-     *
-     * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
-     * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return int
-     */
-    public function diffInQuarters($date = null, $absolute = true);
-
-    /**
      * Get the difference in hours rounded down using timestamps.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
@@ -1412,6 +1399,16 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @return int
      */
     public function diffInWeeks($date = null, $absolute = true);
+
+    /**
+     * Get the difference in quarters rounded down.
+     *
+     * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
+     * @param bool                                                   $absolute Get the absolute of the difference
+     *
+     * @return int
+     */
+    public function diffInQuarters($date = null, $absolute = true);
 
     /**
      * Get the difference in years
@@ -2442,8 +2439,8 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * ```
      * Carbon::parse('2018-07-25')->isBetween('2018-07-14', '2018-08-01'); // true
      * Carbon::parse('2018-07-25')->isBetween('2018-08-01', '2018-08-20'); // false
-     * Carbon::parse('2018-07-25')->isBetween('2018-07-25', '2018-08-01'); // true
-     * Carbon::parse('2018-07-25')->isBetween('2018-07-25', '2018-08-01', false); // false
+     * Carbon::parse('2018-07-25')->isBetween('2018-07-25', '2018-08-01'); // false
+     * Carbon::parse('2018-07-25')->isBetween('2018-07-25', '2018-08-01', true); // true
      * ```
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date1
@@ -3068,8 +3065,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @param mixed $var
      *
-     * @throws Exception
-     *
      * @return static|null
      */
     public static function make($var);
@@ -3319,8 +3314,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param string|null              $time
      * @param DateTimeZone|string|null $tz
      *
-     * @throws Exception
-     *
      * @return static
      */
     public static function parse($time = null, $tz = null);
@@ -3331,8 +3324,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @param string                   $time
      * @param string                   $locale
      * @param DateTimeZone|string|null $tz
-     *
-     * @throws Exception
      *
      * @return static
      */
@@ -3415,8 +3406,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @param string|null              $time
      * @param DateTimeZone|string|null $tz
-     *
-     * @throws Exception
      *
      * @return static
      */

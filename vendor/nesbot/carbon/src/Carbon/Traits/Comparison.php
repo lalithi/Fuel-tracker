@@ -11,7 +11,7 @@
 namespace Carbon\Traits;
 
 use Carbon\CarbonInterface;
-use Carbon\Exceptions\BadComparisonUnitException;
+use Carbon\Exceptions\BadUnitException;
 use InvalidArgumentException;
 
 /**
@@ -621,7 +621,7 @@ trait Comparison
             }
 
             if ($this->localStrictModeEnabled ?? static::isStrictModeEnabled()) {
-                throw new BadComparisonUnitException($unit);
+                throw new BadUnitException($unit);
             }
 
             return false;

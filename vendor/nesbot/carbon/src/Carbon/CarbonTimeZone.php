@@ -10,10 +10,9 @@
  */
 namespace Carbon;
 
-use Carbon\Exceptions\InvalidCastException;
-use Carbon\Exceptions\InvalidTimeZoneException;
 use DateTimeInterface;
 use DateTimeZone;
+use InvalidArgumentException;
 
 class CarbonTimeZone extends DateTimeZone
 {
@@ -25,7 +24,7 @@ class CarbonTimeZone extends DateTimeZone
     protected static function parseNumericTimezone($timezone)
     {
         if ($timezone <= -100 || $timezone >= 100) {
-            throw new InvalidTimeZoneException('Absolute timezone offset cannot be greater than 100.');
+            throw new InvalidArgumentException('Absolute timezone offset cannot be greater than 100.');
         }
 
         return ($timezone >= 0 ? '+' : '').$timezone.':00';
@@ -67,7 +66,7 @@ class CarbonTimeZone extends DateTimeZone
                 return new $className($this->getName());
             }
 
-            throw new InvalidCastException("$className has not the instance() method needed to cast the date.");
+            throw new InvalidArgumentException("$className has not the instance() method needed to cast the date.");
         }
 
         return $className::instance($this);
@@ -78,8 +77,6 @@ class CarbonTimeZone extends DateTimeZone
      *
      * @param DateTimeZone|string|int|null $object     original value to get CarbonTimeZone from it.
      * @param DateTimeZone|string|int|null $objectDump dump of the object for error messages.
-     *
-     * @throws InvalidTimeZoneException
      *
      * @return false|static
      */
@@ -101,7 +98,7 @@ class CarbonTimeZone extends DateTimeZone
 
         if ($tz === false) {
             if (Carbon::isStrictModeEnabled()) {
-                throw new InvalidTimeZoneException('Unknown or bad timezone ('.($objectDump ?: $object).')');
+                throw new InvalidArgumentException('Unknown or bad timezone ('.($objectDump ?: $object).')');
             }
 
             return false;
@@ -216,7 +213,7 @@ class CarbonTimeZone extends DateTimeZone
 
         if ($tz === false) {
             if (Carbon::isStrictModeEnabled()) {
-                throw new InvalidTimeZoneException('Unknown timezone for offset '.$this->getOffset($date ?: Carbon::now($this)).' seconds.');
+                throw new InvalidArgumentException('Unknown timezone for offset '.$this->getOffset($date ?: Carbon::now($this)).' seconds.');
             }
 
             return false;

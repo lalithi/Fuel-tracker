@@ -3,9 +3,9 @@
 @section('content')
 
         <!-- C3 Chart css -->
-        <link href="/assets/libs/c3/c3.min.css" rel="stylesheet" type="text/css" />
+        <link href="http://verticle.local/assets/libs/c3/c3.min.css" rel="stylesheet" type="text/css" />
         
-        <link href="/assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
+        <link href="http://verticle.local/assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
                     <!-- Start Content-->
                     <div class="container-fluid">
                         
@@ -258,10 +258,10 @@
 @section('script')
         
         <!--C3 Chart-->
-        <script src="/assets/libs/d3/d3.min.js"></script>
-        <script src="/assets/libs/c3/c3.min.js"></script>
+        <script src="http://verticle.local/assets/libs/d3/d3.min.js"></script>
+        <script src="http://verticle.local/assets/libs/c3/c3.min.js"></script>
 
-        <script src="/assets/libs/dropify/dropify.min.js"></script>
+        <script src="http://verticle.local/assets/libs/dropify/dropify.min.js"></script>
         <!-- Dashboard init-->
         <script>
 
@@ -282,7 +282,7 @@ var fileNode = document.querySelector('#image'),
                 // mime type error handling
             }
 
-            form.append('file', file, file.name);
+            form.append('files[]', file, file.name);
             form.append('_token', '{{ csrf_field() }}');
             form.append('vehicle_id', '{{ $selected->id }}');
             
