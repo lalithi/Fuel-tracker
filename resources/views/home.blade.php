@@ -310,7 +310,7 @@ var fileNode = document.querySelector('#image'),
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    // do sth with the response
+                    alert("Recipt Uploaded");
                 }
             }
 
