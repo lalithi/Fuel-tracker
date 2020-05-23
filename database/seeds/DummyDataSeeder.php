@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class DummyDataSeeder extends Seeder
 {
     var $odometer_reading = 100;
+    var $refuel_date =  null;
     /**
      * Run the database seeds.
      *
@@ -12,6 +14,9 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
+        $this->refuel_date =  new Carbon('first day of January 2019', 'Australia/Melbourne');
+         
+
         $u = factory(App\User::class)->create([
             'email'=>'admin@mail.com',
             'password'=>Hash::make('123123123'),
@@ -23,6 +28,7 @@ class DummyDataSeeder extends Seeder
                 $this->odometer_reading = $this->odometer_reading+100;
                 $fuelRecord->cost = rand(100, 120);
                 $fuelRecord->refuel_amount = rand(40, 45);
+                $fuelRecord->refuel_date = $this->refuel_date->add(7 ,'day');
             })
         );
         }));
