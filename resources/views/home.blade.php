@@ -71,14 +71,14 @@
                                             <h5 class="m-0">
                                                 <a class="text-dark collapsed" data-toggle="collapse" href="#collapseOne" aria-expanded="false">
                                                     <i class="mdi mdi-help-circle mr-1 text-primary"></i> 
-                                                    Upload a recipt
+                                                    Upload a receipt
                                                 </a>
                                             </h5>
                                         </div>
                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="">
                                             <div class="card-body">
                                             <div class="dropify-wrapper"><div class="dropify-message"><span class="file-icon"></span> <p>Drag and drop a file here or click</p><p class="dropify-error">Ooops, something wrong appended.</p></div><div class="dropify-loader"></div><div class="dropify-errors-container"><ul></ul></div><input type="file" class="dropify" data-max-file-size="5M" id="image"><button type="button" class="dropify-clear">Remove</button><div class="dropify-preview"><span class="dropify-render"></span><div class="dropify-infos"><div class="dropify-infos-inner"><p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p><p class="dropify-infos-message">Drag and drop or click to replace</p></div></div></div></div>
-                                            <span style="color:red">* Once upload the recipt, details will be apper in <a href="{{ url('/fuel-records') }}">Fuel Records</a> section in few minutes.</span>
+                                            <span style="color:red">* Once upload the receipt, details will be apper in <a href="{{ url('/fuel-records') }}">Fuel Records</a> section in few minutes.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -117,9 +117,9 @@
                                             <input type="hidden"  name="personal_vehicle_id" id="personal_vehicle_id" value="{{ $selected->id }}">
                                                 
                                             <div class="form-group">
-                                                <label for="reciptNumber">Recipt Number</label>
-                                                <input type="text" class="form-control" name="receipt_number" id="receipt_number" aria-describedby="reciptNumber" placeholder="Enter Recipt Number">
-                                                <small id="reciptNumber" class="form-text text-muted">Recipt Number</small>
+                                                <label for="reciptNumber">Receipt Number</label>
+                                                <input type="text" class="form-control" name="receipt_number" id="receipt_number" aria-describedby="reciptNumber" placeholder="Enter Receipt Number">
+                                                <small id="reciptNumber" class="form-text text-muted">Receipt Number</small>
                                             </div>
                                             <div class="form-group">
                                                 <label for="odometerReading">Odometer Reading</label>
@@ -311,7 +311,7 @@ var fileNode = document.querySelector('#image'),
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    alert("Recipt Uploaded");
+                    alert("Receipt Uploaded");
                 }
             }
 
