@@ -463,7 +463,7 @@ File: C3 charts init js
       c3.generate({
         bindto: '#line-regions',
         data: {
-            x:'x'
+            x:'x',
           columns: [['Efficiency',
           @foreach($efficiency as $w)
           {{ $w.','}}
@@ -482,7 +482,7 @@ File: C3 charts init js
       c3.generate({
         bindto: '#refuel-cost',
         data: {
-            x:'x'
+            x:'x',
           columns: [['Amount', 
           @foreach($amount as $q)
           {{ $q.','}}
