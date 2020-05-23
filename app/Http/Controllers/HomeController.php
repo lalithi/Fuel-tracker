@@ -96,7 +96,7 @@ class HomeController extends Controller
     }
 
     public function upload(Request $request){
-        $vehicle = $request->get('vehicle');
+        $vehicle = $request->get('vehicle_id');
        $recipt = Storage::disk('s3')->putFile(Auth::user()->id.'/'.$vehicle, $request->file('file'));
 
     }
