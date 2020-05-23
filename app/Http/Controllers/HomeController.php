@@ -9,6 +9,7 @@ use App\VehicleModel;
 use App\FuelRecord;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
