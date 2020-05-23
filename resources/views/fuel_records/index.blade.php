@@ -113,6 +113,8 @@
 
                                                 <dt class="col-sm-3">Cost</dt>
                                                 <dd class="col-sm-9">{{ $fuel_record_more->cost }}</dd>
+                                                <dt class="col-sm-3">Date</dt>
+                                                <dd class="col-sm-9">{{ $fuel_record_more->refuel_date }}</dd>
                                             </dl>
                                     </div> <!-- end table-responsive-->
         
@@ -161,6 +163,11 @@
                                                 <label for="cost">Cost</label>
                                                 <input type="text" class="form-control" name="cost" id="cost" aria-describedby="cost" placeholder="Enter Cost" value="{{ $fuel_record_edit->cost }}">
                                                 <small id="cost" class="form-text text-muted">Cost</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="refuel_date">Date</label>
+                                                <input type="date" class="form-control" name="refuel_date" id="refuel_date" aria-describedby="refuel_date" placeholder="Enter Refueld Date" value="{{ $fuel_record_edit->refuel_date }}">
+                                                <small id="refuel_date" class="form-text text-muted">Refueled Date</small>
                                             </div>
                                             
                                             <div class="form-group">
@@ -241,6 +248,11 @@
                                                 <label for="cost">Cost</label>
                                                 <input type="text" class="form-control" name="cost" id="cost" aria-describedby="cost" placeholder="Enter Cost">
                                                 <small id="cost" class="form-text text-muted">Cost</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="refuel_date">Date</label>
+                                                <input type="date" class="form-control" name="refuel_date" id="refuel_date" aria-describedby="refuel_date" placeholder="Enter Refueld Date">
+                                                <small id="refuel_date" class="form-text text-muted">Refueled Date</small>
                                             </div>
                                             <div class="form-group">
                                                 <label for="fuel_type">Fuel Type</label>

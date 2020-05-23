@@ -67,6 +67,7 @@ class FuelRecordController extends Controller
             'refuel_amount' => 'required|numeric',
             'fuel_type_id' => 'required',
             'personal_vehicle_id' => 'required',
+            'refuel_date' => 'required'
         ]);
 
         $fuelRecord = new FuelRecord();
@@ -74,6 +75,7 @@ class FuelRecordController extends Controller
         $fuelRecord->cost = $request->get('cost');
         $fuelRecord->odometer_reading = $request->get('odometer_reading');
         $fuelRecord->refuel_amount = $request->get('refuel_amount');
+        $fuelRecord->refuel_date = $request->get('refuel_date');
         $fuelRecord->fuel_type_id = $request->get('fuel_type_id');
         $fuelRecord->personal_vehicle_id = $request->get('personal_vehicle_id');
         $fuelRecord->save();
@@ -146,6 +148,7 @@ class FuelRecordController extends Controller
             'refuel_amount' => 'required|numeric',
             'fuel_type_id' => 'required',
             'personal_vehicle_id' => 'required',
+            'refuel_date' => 'required'
         ]);
 
        
@@ -154,6 +157,7 @@ class FuelRecordController extends Controller
         $fuelRecord->odometer_reading = $request->get('odometer_reading');
         $fuelRecord->refuel_amount = $request->get('refuel_amount');
         $fuelRecord->fuel_type_id = $request->get('fuel_type_id');
+        $fuelRecord->refuel_date = $request->get('refuel_date');
         $fuelRecord->personal_vehicle_id = $request->get('personal_vehicle_id');
         $fuelRecord->save();
 
