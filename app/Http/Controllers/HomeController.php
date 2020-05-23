@@ -10,6 +10,7 @@ use App\FuelRecord;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -128,7 +129,7 @@ class HomeController extends Controller
         $fuelRecord->fuel_type_id = $fuelType;
         $fuelRecord->personal_vehicle_id = $request->get('vehicle');
         $fuelRecord->cost = $cost;
-        $fuelRecord->refuel_date = \Carbon::now('Australia/Melbourne')->format("Y-m-d");
+        $fuelRecord->refuel_date = Carbon::now('Australia/Melbourne')->format("d/m/Y");
         $fuelRecord->save();
     }
 }
