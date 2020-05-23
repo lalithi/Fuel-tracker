@@ -28,7 +28,7 @@ class DummyDataSeeder extends Seeder
                 $this->odometer_reading = $this->odometer_reading+100;
                 $fuelRecord->cost = rand(100, 120);
                 $fuelRecord->refuel_amount = rand(40, 45);
-                $fuelRecord->refuel_date = $this->refuel_date->add(7 ,'day');
+                $fuelRecord->refuel_date = $this->refuel_date->add(7 ,'day')->format("Y-m-d");
             })
         );
         }));

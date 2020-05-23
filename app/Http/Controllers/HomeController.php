@@ -65,11 +65,11 @@ class HomeController extends Controller
                 $amount[] = $f->refuel_amount;
                 if($oldreading != 0)
                     $efficiency[] = ($f->odometer_reading - $oldreading)/$f->cost;
-                $d = Carbon::createFromFormat('d/m/Y', $f->refuel_date);
-                if(!$d)
-                $d = Carbon::now();
+                // $d = Carbon::createFromFormat('Y-m-d', $f->refuel_date);
+                // if(!$d)
+                // $d = Carbon::now();
              
-                $refuel_date[] = $d->format('Y-m-d');
+                $refuel_date[] = $f->refuel_date;
                 $total_cost = $total_cost + $f->cost;
                 $total_amount = $total_amount + $f->refuel_amount;
 
