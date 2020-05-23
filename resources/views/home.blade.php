@@ -27,7 +27,12 @@
                                                     <div class="col-4" style="margin-top: 14px;">
                                                     <select class="form-control" id="personal_vehicle_id" name="personal_vehicle_id" onchange="update_vehicle()">
                                                     @foreach($personal_vehicles as $personal_vehicle)
+                                                    @if((isset($personal_vehicle_id))&& ($personal_vehicle_id == $personal_vehicle->id))
+                                                    <option value="{{ $personal_vehicle->id }}" selected>{{ $personal_vehicle->registration_number }}</option>
+                                                    @else 
                                                     <option value="{{ $personal_vehicle->id }}">{{ $personal_vehicle->registration_number }}</option>
+                                                    
+                                                    @endif
                                                     @endforeach
                                                 </select>
                                                     </div>
