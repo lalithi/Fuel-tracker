@@ -3,9 +3,9 @@
 @section('content')
 
         <!-- C3 Chart css -->
-        <link href="/assets/libs/c3/c3.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://d3tddgb8y3wuok.cloudfront.net/assets/libs/c3/c3.min.css" rel="stylesheet" type="text/css" />
         
-        <link href="/assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://d3tddgb8y3wuok.cloudfront.net/assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
                     <!-- Start Content-->
                     <div class="container-fluid">
                         
@@ -279,10 +279,10 @@
 @section('script')
         
         <!--C3 Chart-->
-        <script src="/assets/libs/d3/d3.min.js"></script>
-        <script src="/assets/libs/c3/c3.min.js"></script>
+        <script src="https://d3tddgb8y3wuok.cloudfront.net/assets/libs/d3/d3.min.js"></script>
+        <script src="https://d3tddgb8y3wuok.cloudfront.net/assets/libs/c3/c3.min.js"></script>
 
-        <script src="/assets/libs/dropify/dropify.min.js"></script>
+        <script src="https://d3tddgb8y3wuok.cloudfront.net/assets/libs/dropify/dropify.min.js"></script>
         <!-- Dashboard init-->
         <script>
 
