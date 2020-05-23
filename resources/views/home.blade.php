@@ -463,10 +463,16 @@ File: C3 charts init js
       c3.generate({
         bindto: '#line-regions',
         data: {
+            x:'x'
           columns: [['Efficiency',
           @foreach($efficiency as $w)
           {{ $w.','}}
-          @endforeach]],
+          @endforeach],
+          ['x',
+          @foreach($refuel_date as $r)
+          {{ "`".$r."`,"}}
+          @endforeach
+          ]],
           colors: {
             Efficiency: '#4a81d4'
           }
@@ -476,9 +482,15 @@ File: C3 charts init js
       c3.generate({
         bindto: '#refuel-cost',
         data: {
+            x:'x'
           columns: [['Amount', 
           @foreach($amount as $q)
           {{ $q.','}}
+          @endforeach
+          ],
+          ['x',
+          @foreach($refuel_date as $r)
+          {{ "`".$r."`,"}}
           @endforeach
           ]],
           types: {
