@@ -120,6 +120,9 @@ class HomeController extends Controller
         $cost = 0;
         if($request->get('cost'))
             $cost = $request->get('cost');
+        $amount = 0;
+            if($request->get('amount'))
+                $amount = $request->get('amount');
 
         $fuelType = "";
         if($request->get('ftype'))
@@ -130,6 +133,7 @@ class HomeController extends Controller
         $fuelRecord->fuel_type_id = $fuelType;
         $fuelRecord->personal_vehicle_id = $request->get('vehicle');
         $fuelRecord->cost = $cost;
+        $fuelRecord->refuel_amount = $amount;
         $fuelRecord->refuel_date = Carbon::now('Australia/Melbourne')->format("d/m/Y");
         $fuelRecord->save();
     }
