@@ -92,9 +92,9 @@
                         <div class="row mt-3">
                             <div class="col-12 text-center">
                             <div class="footer-links d-none d-sm-block">
-                    <a href="{{ url('about-us') }}"  style="color:white">About Us<span style="color:white;padding-left:15px">|</span></a>
+                    <!-- <a href="{{ url('about-us') }}"  style="color:white">About Us<span style="color:white;padding-left:15px">|</span></a>
                     <a href="{{ url('help') }}" style="color:white;padding-left:15px">Help & FAQs<span style="color:white;padding-left:15px">|</span></a>
-                    <a href="{{ url('contact-us') }}" style="color:white;padding-left:15px">Contact Us</a>
+                    <a href="{{ url('contact-us') }}" style="color:white;padding-left:15px">Contact Us</a> -->
                 </div>
                             </div> <!-- end col -->
                         </div>

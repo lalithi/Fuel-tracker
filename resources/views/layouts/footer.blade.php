@@ -7,9 +7,9 @@
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-sm-block">
-                    <a href="{{ url('about-us') }}">About Us</a>
+                    <!-- <a href="{{ url('about-us') }}">About Us</a>
                     <a href="{{ url('help') }}">Help & FAQs</a>
-                    <a href="{{ url('contact-us') }}">Contact Us</a>
+                    <a href="{{ url('contact-us') }}">Contact Us</a> -->
                 </div>
             </div>
         </div>
