@@ -454,10 +454,13 @@ File: C3 charts init js
           groups: [['Cost']]
         },
         axis: {
-          x: {
-            type: 'categorized'
-          }
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
         }
+    }
       }); //roated chart
 
       c3.generate({
@@ -489,9 +492,15 @@ File: C3 charts init js
       c3.generate({
         bindto: '#refuel-cost',
         data: {
+            x:'x',
           columns: [['Amount', 
           @foreach($amount as $q)
           {{ $q.','}}
+          @endforeach
+          ],
+          ['x',
+          @foreach($refuel_date as $r)
+          {{ "`".$r."`,"}}
           @endforeach
           ]],
           types: {
@@ -500,7 +509,14 @@ File: C3 charts init js
           colors: {
             Amount: '#4a81d4'
           }
+        },axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
         }
+    }
       });
      
     }, $.ChartC3 = new ChartC3(), $.ChartC3.Constructor = ChartC3;
