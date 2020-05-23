@@ -476,7 +476,14 @@ File: C3 charts init js
           colors: {
             Efficiency: '#4a81d4'
           }
+        },axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
         }
+    }
       });
       
       c3.generate({
