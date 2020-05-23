@@ -442,7 +442,7 @@ File: C3 charts init js
           ],
           ['x',
           @foreach($refuel_date as $r)
-          {{ '"'.$r.',"'}}
+          {{ "'".$r."',"}}
           @endforeach
           ]],
           types: {
