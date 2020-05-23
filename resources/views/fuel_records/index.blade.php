@@ -66,7 +66,7 @@
                                             @else
                                             <tr>
                                             @endif
-                                                <td>{{ $fuel_record->created_at }}</td>
+                                                <td>{{ $fuel_record->refuel_date }}</td>
                                                 <td>{{ $fuel_record->vehicle->registration_number }}</td>
                                                 <td>{{ $fuel_record->odometer_reading }}</td>
                                                 <td>{{ $fuel_record->cost }}</td>
