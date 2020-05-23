@@ -123,7 +123,8 @@ class HomeController extends Controller
 
         $fuelType = "";
         if($request->get('ftype'))
-            $fuelType = $request->get('ftype');
+            if(FuelType::where('name', '=',$request->get('ftype'))->first())
+                $fuelType = FuelType::where('name', '=',$request->get('ftype'))->first()->id;
 
         $fuelRecord = new FuelRecord();
         $fuelRecord->fuel_type_id = $fuelType;
