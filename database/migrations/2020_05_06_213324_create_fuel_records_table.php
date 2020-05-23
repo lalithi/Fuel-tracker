@@ -15,12 +15,13 @@ class CreateFuelRecordsTable extends Migration
     {
         Schema::create('fuel_records', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('fuel_type_id');
-            $table->unsignedInteger('personal_vehicle_id');
-            $table->string('receipt_number');
-            $table->string('cost');
-            $table->string('odometer_reading');
-            $table->string('refuel_amount');
+            $table->unsignedInteger('fuel_type_id')->default(1);
+            $table->unsignedInteger('personal_vehicle_id')->nullable();
+            $table->string('receipt_number')->nullable();
+            $table->string('cost')->default("0.00");
+            $table->string('odometer_reading')->default("0");
+            $table->string('refuel_amount')->default("0");
+            $table->string('refuel_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

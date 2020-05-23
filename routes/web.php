@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+Route::get('/import' , 'HomeController@import');
 Route::get('/about-us', 'HomeController@about');
 Route::get('/contact-us', 'HomeController@contact');
 Route::get('/help', 'HomeController@help');

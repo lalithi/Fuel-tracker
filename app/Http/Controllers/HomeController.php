@@ -96,8 +96,9 @@ class HomeController extends Controller
     }
 
     public function upload(Request $request){
-       $recipt = Storage::disk('s3')->putFile('receipt', $request->file('file'));
-       $vehicle = $request->get('vehicle');
+        $vehicle = $request->get('vehicle');
+       $recipt = Storage::disk('s3')->putFile(Auth::user()->id.'/'.$vehicle, $request->file('file'));
+
     }
 
     public function about(Request $request){
@@ -111,5 +112,19 @@ class HomeController extends Controller
     }
     public function terms(Request $request){
        return view('terms');
+    }
+    public function import(Request $request){
+        Log::info($request->all());
+        $cost = 0;
+        if($request->get('cost'))
+            $cost = $request->get('cost');
+
+        $fuelType = "";
+        if($request->get('ftype'))
+            $fuelType = $request->get('ftype');
+
+        $fuelRecord = new FuelRecord();
+
+
     }
 }
