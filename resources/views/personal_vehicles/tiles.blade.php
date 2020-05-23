@@ -21,6 +21,9 @@
                                         </ol>
                                     </div>
                                     <h4 class="page-title">My Vehicles</h4>
+                                    <p class="sub-header">
+                                    List of Personal Vehicles. Please click <a href="{{ url('vehicles/create') }}">here</a> to add a new Vehicle</p>
+                                    </p>
                                 </div>
                             </div>
                         </div>     

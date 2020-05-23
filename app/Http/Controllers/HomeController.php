@@ -55,6 +55,7 @@ class HomeController extends Controller
             $cost = [];
             $amount = [];
             $efficiency = [];
+            $refuel_date = [];
             $oldreading = 0;
             $total_distance = 0;
             $total_cost = 0;
@@ -65,7 +66,7 @@ class HomeController extends Controller
                 if($oldreading != 0)
                     $efficiency[] = ($f->odometer_reading - $oldreading)/$f->cost;
                 
-
+                $refuel_date[] = $f->refuel_date;
                 $total_cost = $total_cost + $f->cost;
                 $total_amount = $total_amount + $f->refuel_amount;
 
@@ -88,6 +89,7 @@ class HomeController extends Controller
         return view('home')
         ->with('fuel_types', $fuelTypes)
         ->with('selected', $selected)
+        ->with('refuel_date', $refuel_date)
         ->with('personal_vehicles', $personalVehicles)
         ->with('efficiency', $efficiency)
         ->with('cost', $cost)

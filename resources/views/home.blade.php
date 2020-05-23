@@ -120,6 +120,11 @@
                                                 <small id="cost" class="form-text text-muted">Cost</small>
                                             </div>
                                             <div class="form-group">
+                                                <label for="refuel_date">Date</label>
+                                                <input type="date" class="form-control" name="refuel_date" id="refuel_date" aria-describedby="refuel_date" placeholder="Enter Refueld Date">
+                                                <small id="refuel_date" class="form-text text-muted">Refueled Date</small>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="fuel_type">Fuel Type</label>
                                                 <select class="form-control" id="fuel_type_id" name="fuel_type_id">
                                                 @foreach($fuel_types as $fuel_type)
@@ -418,9 +423,15 @@ File: C3 charts init js
       c3.generate({
         bindto: '#combine-chart',
         data: {
+            x:'x'
           columns: [['Cost', 
           @foreach($cost as $c)
           {{ $c.','}}
+          @endforeach
+          ],
+          ['x',
+          @foreach($refuel_date as $r)
+          {{ $r.','}}
           @endforeach
           ]],
           types: {

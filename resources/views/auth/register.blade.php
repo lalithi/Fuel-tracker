@@ -66,7 +66,7 @@
                                         <button class="btn btn-success btn-block" type="submit"> Sign Up </button>
                                     </div>
                                     <div class="form-group mb-0">
-                                    by signing up you agree to <a href="{{ url('/terms-and-conditions') }}">Our Terms & Conditions</a>
+                                    <!-- by signing up you agree to <a href="{{ url('/terms-and-conditions') }}">Our Terms & Conditions</a> -->
                                     </div>
 
                                 </form>
