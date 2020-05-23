@@ -423,7 +423,7 @@ File: C3 charts init js
       c3.generate({
         bindto: '#combine-chart',
         data: {
-            x:'x'
+            x:'x',
           columns: [['Cost', 
           @foreach($cost as $c)
           {{ $c.','}}
