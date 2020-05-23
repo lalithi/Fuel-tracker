@@ -134,7 +134,7 @@ class HomeController extends Controller
         $fuelRecord->personal_vehicle_id = $request->get('vehicle');
         $fuelRecord->cost = $cost;
         $fuelRecord->refuel_amount = $amount;
-        $fuelRecord->refuel_date = Carbon::now('Australia/Melbourne')->format("d/m/Y");
+        $fuelRecord->refuel_date = Carbon::now('Australia/Melbourne')->format("Y-m-d");
         $fuelRecord->save();
     }
 }
